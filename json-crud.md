@@ -71,3 +71,110 @@ Oracle Database는 JSON 데이터의 저장과 쿼리를 위한 강력한 기능
 [29] https://www.reddit.com/r/dataengineering/comments/15k4oyg/storing_json_database_vs_object_storage/
 [30] https://docs.oracle.com/en/database/oracle/oracle-database/21/adjsn/store-and-manage-json-data.html
 [31] https://www.reddit.com/r/rails/comments/kg6k54/is_it_bad_practice_to_store_and_retrieve_data_in/
+
+
+## Oracle DB에서 JSON 데이터의 CRUD 예시
+
+Oracle Database에서 JSON 데이터를 관리하는 CRUD(Create, Read, Update, Delete) 작업은 다양한 SQL 명령어와 JSON 관련 함수를 통해 수행할 수 있습니다. 아래는 각 작업에 대한 설명과 예시입니다.
+
+### **1. Create (생성)**
+
+JSON 데이터를 데이터베이스에 삽입하는 작업입니다. `INSERT` 문을 사용하여 새로운 JSON 레코드를 추가할 수 있습니다.
+
+```sql
+INSERT INTO json_table (id, json_data) 
+VALUES (1, '{"name": "Alice", "age": 30, "city": "New York"}');
+```
+
+위의 예시에서는 `json_table`이라는 테이블에 새로운 JSON 객체를 삽입합니다.
+
+### **2. Read (조회)**
+
+저장된 JSON 데이터를 조회하는 작업입니다. `SELECT` 문과 JSON 관련 함수를 사용하여 특정 필드를 추출할 수 있습니다.
+
+```sql
+SELECT JSON_VALUE(json_data, '$.name') AS name 
+FROM json_table 
+WHERE id = 1;
+```
+
+이 쿼리는 `json_table`에서 ID가 1인 레코드의 `name` 필드를 조회합니다.
+
+### **3. Update (수정)**
+
+기존 JSON 데이터를 수정하는 작업입니다. `UPDATE` 문과 JSON 관련 함수를 사용하여 특정 필드를 업데이트할 수 있습니다.
+
+```sql
+UPDATE json_table 
+SET json_data = JSON_MERGEPATCH(json_data, '{"age": 31}') 
+WHERE id = 1;
+```
+
+위의 예시는 ID가 1인 레코드의 `age` 필드를 31로 업데이트합니다.
+
+### **4. Delete (삭제)**
+
+저장된 JSON 데이터를 삭제하는 작업입니다. `DELETE` 문을 사용하여 특정 레코드를 제거할 수 있습니다.
+
+```sql
+DELETE FROM json_table 
+WHERE id = 1;
+```
+
+이 쿼리는 ID가 1인 레코드를 `json_table`에서 삭제합니다.
+
+### **JSON 데이터의 CRUD 작업 요약**
+
+- **Create**: `INSERT` 문을 사용하여 JSON 객체를 추가합니다.
+- **Read**: `SELECT` 문과 JSON 함수를 사용하여 JSON 필드를 조회합니다.
+- **Update**: `UPDATE` 문과 JSON 함수를 사용하여 JSON 데이터를 수정합니다.
+- **Delete**: `DELETE` 문을 사용하여 JSON 레코드를 삭제합니다.
+
+이러한 CRUD 작업을 통해 Oracle Database에서 JSON 데이터를 효과적으로 관리할 수 있습니다. JSON 데이터는 관계형 데이터와 함께 사용할 수 있으며, 다양한 SQL 기능을 활용하여 복잡한 쿼리와 데이터 조작이 가능합니다.
+[1] https://support.quest.com/it-it/technical-documents/shareplex/11.4/%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%84%A4%EC%A0%95-%EC%95%88%EB%82%B4%EC%84%9C/target
+[2] https://docs.oracle.com/ko/cloud/paas/nosql-cloud/uakik/
+[3] https://cloud.google.com/bigquery/docs/samples/bigquery-load-table-gcs-json-truncate?hl=ko
+[4] https://www.oracle.com/kr/autonomous-database/autonomous-json-database/get-started/
+[5] https://velog.io/@kimyun111/Oracle-DB-CRUD
+[6] https://oracle-cloud.tistory.com/entry/%EC%98%A4%EB%9D%BC%ED%81%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-JSON-%EC%A7%80%EC%9B%90
+[7] https://cloud.google.com/spanner/docs/working-with-json?hl=ko
+[8] https://smarttechways.com/2023/10/30/update-delete-and-modify-json-data-in-the-json-column-in-oracle/
+[9] https://velog.io/@b1rdn2w/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%98%91%EC%97%85-Spring-Boot-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%B6%95-2-DB-%EC%A0%81%EC%9A%A9%EA%B3%BC-%ED%99%9C%EC%9A%A9
+[10] https://docs.oracle.com/en/middleware/developer-tools/jet/9/develop/create-crud-application-using-oracle-jet.html
+[11] https://oracle-cloud.tistory.com/entry/%EC%98%A4%EB%9D%BC%ED%81%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-23c-JSON-Relational-Duality-Views
+[12] https://winterrosy.tistory.com/4
+[13] https://docs.oracle.com/ko/cloud/paas/autonomous-database/dedicated/adbbj/index.html?source=%3Aow%3Alp%3Acpo%3A%3A%3A%3ARC_CORP230307P00009%3ALPD400280972+%3Aow%3Alp%3Acpo%3A%3A%3A%3ARC_CORP231202P00004%3ADMO400323615
+[14] https://docs.aws.amazon.com/ko_kr/prescriptive-guidance/latest/patterns/convert-json-oracle-queries-into-postgresql-database-sql.html
+[15] https://docs.oracle.com/ko/learn/oci-bulk-delete-objects/
+[16] https://kosate.github.io/blog/oracle/introducing-sqlcl/
+[17] https://docs.oracle.com/en/database/oracle/oracle-database/23/adjsn/json_transform-operator-remove.html
+[18] https://stackoverflow.com/questions/72842342/update-json-data-in-oracle-sql
+[19] https://medium.com/db-one/level-up-your-productivity-with-json-in-oracle-database-80207e8dd16
+[20] https://forums.oracle.com/ords/apexds/post/json-data-crud-operations-2683
+[21] https://forums.oracle.com/ords/apexds/post/apex-24-1-generate-data-and-deploy-master-detail-crud-using-8981
+[22] https://docs.oracle.com/ko/cloud/paas/autonomous-database/dedicated/ujsfn/
+[23] https://docs.aws.amazon.com/ko_kr/dms/latest/userguide/CHAP_Troubleshooting.html
+[24] https://blogs.oracle.com/sql/post/how-to-store-query-and-create-json-documents-in-oracle-database
+[25] https://python-oracledb.readthedocs.io/en/latest/user_guide/json_data_type.html
+[26] https://medium.com/@npaberin/json-java-and-the-oracle-database-part-1-86d242fbce15
+[27] https://shiningsense.com/1892
+[28] https://docs.oracle.com/en/database/oracle/oracle-database/21/adjsn/insert-load-and-update-json-data.html
+[29] https://oracle-base.com/articles/21c/json-data-type-21c
+[30] https://stackoverflow.com/questions/64702928/how-do-i-insert-json-data-into-an-oracle-database
+[31] https://docs.oracle.com/en/database/oracle/oracle-database/19/adjsn/updating-json-document-json-merge-patch.html
+[32] https://cloud.google.com/bigquery/docs/json-data?hl=ko
+[33] https://blogs.oracle.com/korea/post/oracle-23ai-now-generally-available-kr
+[34] https://docs.oracle.com/en/database/oracle/oracle-database/19/adjsn/overview-of-inserting-updating-loading-JSON-data.html
+[35] https://forums.oracle.com/ords/apexds/post/generate-master-detail-data-in-json-format-4153
+[36] https://martinelli.ch/oracle-json-relational-duality-views-with-spring-boot/
+[37] https://docs.oracle.com/en/database/oracle/oracle-database/21/adjsn/json-in-oracle-database.html
+[38] https://docs.aws.amazon.com/ko_kr/athena/latest/ug/parsing-json-data.html
+[39] https://pretius.com/blog/parse-json-oracle-db/
+[40] https://stackoverflow.com/questions/62508569/oracle-reading-json-data-using-json-query
+[41] https://www.oracle.com/kr/database/what-is-json/
+[42] https://www.oracle.com/kr/autonomous-database/autonomous-json-database/
+[43] https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/about-autonomous-database-workloads.html
+[44] https://livelabs.oracle.com/pls/apex/r/dbpm/livelabs/view-workshop?wid=736
+[45] https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Troubleshooting.html
+[46] https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.PostgreSQL.html
+[47] https://apex.oracle.com/ko/platform/features/whats-new-221/
